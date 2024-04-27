@@ -1,10 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
+import { LoggerService } from "../../logger/services/logger.service";
 import { APP_ENV, APP_NAME, APP_PORT, APP_VERSION, AppConfiguration } from "../model/app-configuration";
 import { DATABASE_NAME, DATABASE_PORT, DatabaseConfiguration } from "../model/database-configuration";
-
-import { LoggerService } from "@infrastructures/logger/services/logger.service";
 
 @Injectable()
 export class ConfigurationService {

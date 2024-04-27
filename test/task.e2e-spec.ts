@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as request from "supertest";
 
 import { INestApplication } from "@nestjs/common";
@@ -20,6 +21,32 @@ async function createNestApplication(): Promise<INestApplication> {
 async function createUserUsing(userService: UserService, email: string): Promise<any> {
     await userService.addUser(email);
     return userService.getUser(email) as any;
+}
+
+async function createTasksFor2DifferentUsers(
+    userService: UserService,
+    taskService: TaskService
+): Promise<{ user: any; tasks: any[] }[]> {
+    const createdUser1 = await createUserUsing(userService, "email_1@test.com");
+    for (let count = 0; count < 15; count++) {
+        await taskService.addTask(`task #${count}`, createdUser1.id, 1);
+    }
+
+    const createdUser2 = await createUserUsing(userService, "email_2@test.com");
+    for (let count = 0; count < 15; count++) {
+        await taskService.addTask(`task #${count}`, createdUser2.id, 1);
+    }
+
+    return [
+        {
+            user: createdUser1,
+            tasks: await taskService.getUserTasks(createdUser1.id),
+        },
+        {
+            user: createdUser2,
+            tasks: await taskService.getUserTasks(createdUser2.id),
+        },
+    ];
 }
 
 describe("TaskController", () => {
@@ -61,7 +88,7 @@ describe("TaskController", () => {
 
                 expect(response.status).toBe(200);
 
-                const haveAllTasksBeenReturned = response.body.every((task) =>
+                const haveAllTasksBeenReturned = response.body.every((task: { id: any }) =>
                     created.tasks.some((createdTask) => createdTask.id === task.id)
                 );
                 expect(haveAllTasksBeenReturned).toBe(true);
@@ -139,29 +166,3 @@ describe("TaskController", () => {
         });
     });
 });
-
-async function createTasksFor2DifferentUsers(
-    userService: UserService,
-    taskService: TaskService
-): Promise<{ user: any; tasks: any[] }[]> {
-    const createdUser1 = await createUserUsing(userService, "email_1@test.com");
-    for (let count = 0; count < 15; count++) {
-        await taskService.addTask(`task #${count}`, createdUser1.id, 1);
-    }
-
-    const createdUser2 = await createUserUsing(userService, "email_2@test.com");
-    for (let count = 0; count < 15; count++) {
-        await taskService.addTask(`task #${count}`, createdUser2.id, 1);
-    }
-
-    return [
-        {
-            user: createdUser1,
-            tasks: await taskService.getUserTasks(createdUser1.id),
-        },
-        {
-            user: createdUser2,
-            tasks: await taskService.getUserTasks(createdUser2.id),
-        },
-    ];
-}
