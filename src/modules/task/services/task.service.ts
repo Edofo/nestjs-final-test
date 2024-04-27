@@ -1,6 +1,6 @@
 import type { Task } from "@prisma/client";
 
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 import { PrismaService } from "../../../infrastructure/database/services/prisma.service";
 import { AddTaskDto } from "../dtos/add-task.dto";
@@ -32,15 +32,6 @@ export class TaskService {
     }
 
     async getUserTasks(userId: string): Promise<Task[]> {
-        await this.prisma.user
-            .findUniqueOrThrow({
-                where: {
-                    id: userId,
-                },
-            })
-            .catch(() => {
-                new BadRequestException("User not found");
-            });
         return this.prisma.task.findMany({
             where: {
                 userId,

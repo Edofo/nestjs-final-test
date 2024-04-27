@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import { Body, Post } from "@nestjs/common";
 
+import { UserExists } from "../../../decorators/user-exist.decorator";
 import { AddTaskDto } from "../dtos/add-task.dto";
 import { TaskService } from "../services/task.service";
 
@@ -14,7 +15,7 @@ export class TaskController {
     }
 
     @Get("/user/:userId")
-    getUserTasks(@Param("userId") userId: string) {
+    getUserTasks(@UserExists("userId") userId: string) {
         return this.taskService.getUserTasks(userId);
     }
 }

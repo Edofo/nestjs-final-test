@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
 
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 
 import isValidEmail from "../../../helpers/validate/isValidEmail";
 import { PrismaService } from "../../../infrastructure/database/services/prisma.service";
@@ -14,7 +14,7 @@ export class UserService {
     async addUser(email: AddUserDto["email"]): Promise<Partial<User> | ConflictException> {
         if (!isValidEmail(email)) throw new BadRequestException("Invalid email");
 
-        const userExist = await this.prisma.user.findUnique({ where: { email } });
+        const userExist = await this.getUser(email);
         if (userExist) throw new ConflictException("User already exists");
 
         return await this.prisma.user.create({
@@ -29,17 +29,15 @@ export class UserService {
         });
     }
 
-    async getUser(email: GetUserDto["email"]): Promise<Partial<User> | NotFoundException> {
-        return await this.prisma.user
-            .findUniqueOrThrow({
-                where: { email },
-                select: {
-                    id: true,
-                    email: true,
-                    name: true,
-                },
-            })
-            .catch(() => new NotFoundException("User not found"));
+    async getUser(email: GetUserDto["email"]): Promise<Partial<User> | null> {
+        return await this.prisma.user.findUnique({
+            where: { email },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+            },
+        });
     }
 
     async resetData(): Promise<string> {
