@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { INestApplication, Injectable, OnModuleDestroy, OnModuleInit, Scope } from "@nestjs/common";
 
-import { LoggerService } from "@infrastructures/logger/services/logger.service";
+import { LoggerService } from "../../logger/services/logger.service";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {

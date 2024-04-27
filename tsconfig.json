@@ -13,13 +13,9 @@
       "outDir": "./dist",
       "baseUrl": ".",
       "paths": {
-          "@env": ["./src/env"],
           "@infrastructures/*": ["./src/infrastructure/*"],
           "@modules/*": ["./src/modules/*"],
           "@helpers/*": ["./src/helpers/*"],
-          "@decorators/*": ["./src/decorators/*"],
-          "@enums/*": ["./src/enums/*"],
-          "@constants/*": ["./src/constants/*"]
       },
       "incremental": true,
       "forceConsistentCasingInFileNames": false,
