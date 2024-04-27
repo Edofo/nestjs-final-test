@@ -10,11 +10,10 @@ export class TaskService {
     constructor(private readonly prisma: PrismaService) {}
 
     addTask(name: AddTaskDto["name"], userId: AddTaskDto["userId"], priority: AddTaskDto["priority"]): Promise<Task> {
-        console.log("TaskService -> addTask -> userId", userId, priority);
         return this.prisma.task.create({
             data: {
                 name,
-                priority,
+                priority: Number(priority),
                 user: {
                     connect: {
                         id: userId,
