@@ -23,7 +23,7 @@ export const UserExists = createParamDecorator(async (param: UserExistsParam, ct
         .findUniqueOrThrow({ where: searchParam })
         .catch(() => false)
         .finally(() => prismaService.$disconnect());
-    if (!userExists) throw new BadRequestException(`User with ${param} ${request.headers[param]} does not exist`);
+    if (!userExists) throw new BadRequestException(`User with ${param} does not exist`);
 
     return email || userId;
 });
