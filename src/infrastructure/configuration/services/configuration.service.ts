@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 
 import { LoggerService } from "../../logger/services/logger.service";
 import { APP_ENV, APP_NAME, APP_PORT, APP_VERSION, AppConfiguration } from "../model/app-configuration";
-import { DATABASE_NAME, DATABASE_PORT, DatabaseConfiguration } from "../model/database-configuration";
+import { DATABASE_NAME, DATABASE_PORT, DATABASE_URL, DatabaseConfiguration } from "../model/database-configuration";
 
 @Injectable()
 export class ConfigurationService {
@@ -54,10 +54,12 @@ export class ConfigurationService {
         // DATABASE
         const databasePort = this.getVariableFromEnvFile(DATABASE_PORT);
         const databaseName = this.getVariableFromEnvFile(DATABASE_NAME);
+        const databaseUrl = this.getVariableFromEnvFile(DATABASE_URL);
 
         this._databaseConfig = {
             DATABASE_NAME: databaseName,
             DATABASE_PORT: databasePort,
+            DATABASE_URL: databaseUrl,
         };
     }
 
