@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as request from "supertest";
 
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 
 import { AppModule } from "../src/app.module";
@@ -24,6 +24,7 @@ describe("UserController", () => {
     describe("POST /", () => {
         beforeEach(async () => {
             app = await createNestApplication();
+            app.useGlobalPipes(new ValidationPipe());
             userService = app.get(UserService);
 
             await app.init();

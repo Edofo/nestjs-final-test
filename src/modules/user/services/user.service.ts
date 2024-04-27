@@ -1,7 +1,8 @@
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 
+import isValidEmail from "../../../helpers/validate/isValidEmail";
 import { PrismaService } from "../../../infrastructure/database/services/prisma.service";
 import { AddUserDto } from "../dtos/add-user.dto";
 import { GetUserDto } from "../dtos/get-user.dto";
@@ -10,11 +11,11 @@ import { GetUserDto } from "../dtos/get-user.dto";
 export class UserService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async addUser(email: AddUserDto["email"]): Promise<User | ConflictException> {
-        console.log(email);
-        await this.prisma.user
-            .findUniqueOrThrow({ where: { email } })
-            .catch(() => new ConflictException("User already exists"));
+    async addUser(email: AddUserDto["email"]): Promise<Partial<User> | ConflictException> {
+        if (!isValidEmail(email)) throw new BadRequestException("Invalid email");
+
+        const userExist = await this.prisma.user.findUnique({ where: { email } });
+        if (userExist) throw new ConflictException("User already exists");
 
         return await this.prisma.user.create({
             data: {
@@ -28,7 +29,7 @@ export class UserService {
         });
     }
 
-    async getUser(email: GetUserDto["email"]): Promise<User | NotFoundException> {
+    async getUser(email: GetUserDto["email"]): Promise<Partial<User> | NotFoundException> {
         return await this.prisma.user
             .findUniqueOrThrow({
                 where: { email },

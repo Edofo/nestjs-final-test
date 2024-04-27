@@ -2,7 +2,7 @@ import type { Task } from "@prisma/client";
 
 import { BadRequestException, Injectable } from "@nestjs/common";
 
-import { PrismaService } from "@infrastructures/database/services/prisma.service";
+import { PrismaService } from "../../infrastructure/database/services/prisma.service";
 
 @Injectable()
 export class TaskService {
