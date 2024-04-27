@@ -4,17 +4,26 @@ import { BadRequestException, ExecutionContext, createParamDecorator } from "@ne
 import isValidEmail from "../helpers/validate/isValidEmail";
 import { PrismaService } from "../infrastructure/database/services/prisma.service";
 
-export const UserExists = createParamDecorator(async (param: string, ctx: ExecutionContext) => {
+type UserExistsParam = "email" | "userId";
+
+export const UserExists = createParamDecorator(async (param: UserExistsParam, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const { email, userId } = request.params;
+
+    const email = request.params.email || request.body.email;
+    const userId = request.params.userId || request.body.userId;
+
+    if (!email && !userId) throw new BadRequestException("Email or userId is required");
 
     if (email && !isValidEmail(email)) throw new BadRequestException("Invalid email");
 
     const prismaService = new PrismaService();
     const searchParam = email ? { email } : { id: userId };
 
-    const userExists = await prismaService.user.findUniqueOrThrow({ where: searchParam }).catch(() => false);
+    const userExists = await prismaService.user
+        .findUniqueOrThrow({ where: searchParam })
+        .catch(() => false)
+        .finally(() => prismaService.$disconnect());
     if (!userExists) throw new BadRequestException(`User with ${param} ${request.headers[param]} does not exist`);
 
-    return request.params[param];
+    return email || userId;
 });

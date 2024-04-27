@@ -55,47 +55,47 @@ describe("TaskController", () => {
     let taskService: TaskService;
     let userService: UserService;
 
-    // describe("GET /user/:userId", () => {
-    //     beforeEach(async () => {
-    //         app = await createNestApplication();
-    //         app.useGlobalPipes(new ValidationPipe());
-    //         taskService = app.get(TaskService);
-    //         userService = app.get(UserService);
+    describe("GET /user/:userId", () => {
+        beforeEach(async () => {
+            app = await createNestApplication();
+            app.useGlobalPipes(new ValidationPipe());
+            taskService = app.get(TaskService);
+            userService = app.get(UserService);
 
-    //         await app.init();
-    //     });
+            await app.init();
+        });
 
-    //     afterEach(async () => {
-    //         await taskService.resetData();
-    //         await userService.resetData();
-    //         await app.close();
-    //     });
+        afterEach(async () => {
+            await taskService.resetData();
+            await userService.resetData();
+            await app.close();
+        });
 
-    //     it("should return an HTTP error status 400 when given userId is not valid", async () => {
-    //         const invalidUserIds = ["h e", "-87", "eeee"];
+        it("should return an HTTP error status 400 when given userId is not valid", async () => {
+            const invalidUserIds = ["h e", "-87", "eeee"];
 
-    //         for (const userId of invalidUserIds) {
-    //             const response = await request(app.getHttpServer()).get(`/task/user/${userId}`);
+            for (const userId of invalidUserIds) {
+                const response = await request(app.getHttpServer()).get(`/task/user/${userId}`);
 
-    //             expect(response.status).toBe(400);
-    //         }
-    //     });
+                expect(response.status).toBe(400);
+            }
+        });
 
-    //     it("should return an HTTP status 200 when given userId is valid", async () => {
-    //         const createdElements = await createTasksFor2DifferentUsers(userService, taskService);
+        it("should return an HTTP status 200 when given userId is valid", async () => {
+            const createdElements = await createTasksFor2DifferentUsers(userService, taskService);
 
-    //         for (const created of createdElements) {
-    //             const response = await request(app.getHttpServer()).get(`/task/user/${created.user.id}`);
+            for (const created of createdElements) {
+                const response = await request(app.getHttpServer()).get(`/task/user/${created.user.id}`);
 
-    //             expect(response.status).toBe(200);
+                expect(response.status).toBe(200);
 
-    //             const haveAllTasksBeenReturned = response.body.every((task: { id: any }) =>
-    //                 created.tasks.some((createdTask) => createdTask.id === task.id)
-    //             );
-    //             expect(haveAllTasksBeenReturned).toBe(true);
-    //         }
-    //     });
-    // });
+                const haveAllTasksBeenReturned = response.body.every((task: { id: any }) =>
+                    created.tasks.some((createdTask) => createdTask.id === task.id)
+                );
+                expect(haveAllTasksBeenReturned).toBe(true);
+            }
+        });
+    });
 
     describe("POST /", () => {
         beforeEach(async () => {
