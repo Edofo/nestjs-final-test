@@ -17,4 +17,13 @@ model User {
   id    String  @id @default(uuid())
   email String  @unique
   name  String?
+  Task  Task[]
+}
+
+model Task {
+  id       String @id @default(uuid())
+  name     String
+  priority Int
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
 }
