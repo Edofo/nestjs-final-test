@@ -2,13 +2,19 @@ import type { Task } from "@prisma/client";
 
 import { BadRequestException, Injectable } from "@nestjs/common";
 
-import { PrismaService } from "@infrastructures/database/services/prisma.service";
+import { PrismaService } from "../../infrastructure/database/services/prisma.service";
 
 @Injectable()
 export class TaskService {
     constructor(private readonly prisma: PrismaService) {}
 
     addTask(name: string, userId: string, priority: number): Promise<Task> {
+        const isNameValid = name.length > 0 && name.length <= 255;
+        const isUserIdValid = userId.length === 36;
+        const isPriorityValid = priority >= 0 && priority <= 10;
+        if (!isNameValid || !isUserIdValid || !isPriorityValid) {
+            throw new BadRequestException("Invalid input");
+        }
         return this.prisma.task.create({
             data: {
                 name,
