@@ -24,6 +24,7 @@ describe("UserController", () => {
     describe("POST /", () => {
         beforeEach(async () => {
             app = await createNestApplication();
+            app.useGlobalPipes(new ValidationPipe());
             userService = app.get(UserService);
 
             await app.init();

@@ -1,8 +1,8 @@
 import type { User } from "@prisma/client";
 
-import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 
-import isValidEmail from "../../../helpers/validate/isValidEmail";
+// import isValidEmail from "../../../helpers/validate/isValidEmail";
 import { PrismaService } from "../../../infrastructure/database/services/prisma.service";
 import { AddUserDto } from "../dtos/add-user.dto";
 import { GetUserDto } from "../dtos/get-user.dto";
@@ -12,7 +12,7 @@ export class UserService {
     constructor(private readonly prisma: PrismaService) {}
 
     async addUser(email: AddUserDto["email"]): Promise<Partial<User> | ConflictException> {
-        if (!isValidEmail(email)) throw new BadRequestException("Invalid email");
+        // if (!isValidEmail(email)) throw new BadRequestException("Invalid email");
 
         if (await this.getUser(email)) throw new ConflictException("User already exists");
 
