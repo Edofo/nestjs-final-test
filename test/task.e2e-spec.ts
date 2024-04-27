@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as request from "supertest";
 
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 
 import { AppModule } from "../src/app.module";
-import { TaskService } from "../src/modules/task/task.service";
+import { TaskService } from "../src/modules/task/services/task.service";
 import { UserService } from "../src/modules/user/services/user.service";
 
 async function createNestApplication(): Promise<INestApplication> {
@@ -58,6 +58,7 @@ describe("TaskController", () => {
     describe("GET /user/:userId", () => {
         beforeEach(async () => {
             app = await createNestApplication();
+            app.useGlobalPipes(new ValidationPipe());
             taskService = app.get(TaskService);
             userService = app.get(UserService);
 
@@ -99,6 +100,7 @@ describe("TaskController", () => {
     describe("POST /", () => {
         beforeEach(async () => {
             app = await createNestApplication();
+            app.useGlobalPipes(new ValidationPipe());
             taskService = app.get(TaskService);
             userService = app.get(UserService);
 
