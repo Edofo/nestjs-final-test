@@ -14,8 +14,7 @@ export class UserService {
     async addUser(email: AddUserDto["email"]): Promise<Partial<User> | ConflictException> {
         if (!isValidEmail(email)) throw new BadRequestException("Invalid email");
 
-        const userExist = await this.getUser(email);
-        if (userExist) throw new ConflictException("User already exists");
+        if (await this.getUser(email)) throw new ConflictException("User already exists");
 
         return await this.prisma.user.create({
             data: {
@@ -43,6 +42,6 @@ export class UserService {
     async resetData(): Promise<string> {
         await this.prisma.user.deleteMany();
 
-        return "Data has been reset";
+        return "Users Data has been reset";
     }
 }

@@ -58,7 +58,6 @@ describe("TaskController", () => {
     describe("GET /user/:userId", () => {
         beforeEach(async () => {
             app = await createNestApplication();
-            app.useGlobalPipes(new ValidationPipe());
             taskService = app.get(TaskService);
             userService = app.get(UserService);
 

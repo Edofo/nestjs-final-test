@@ -39,8 +39,8 @@ export class TaskService {
         });
     }
 
-    async resetData(): Promise<void> {
+    async resetData(): Promise<string> {
         await this.prisma.task.deleteMany();
-        return Promise.resolve();
+        return "Tasks Data has been reset";
     }
 }
