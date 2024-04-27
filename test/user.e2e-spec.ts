@@ -5,7 +5,7 @@ import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 
 import { AppModule } from "../src/app.module";
-import { UserService } from "../src/modules/user/user.service";
+import { UserService } from "../src/modules/user/services/user.service";
 
 async function createNestApplication() {
     process.env.DATABASE_NAME = "test_nestjs-final-test-db_USERS";

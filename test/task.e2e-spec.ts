@@ -6,7 +6,7 @@ import { Test } from "@nestjs/testing";
 
 import { AppModule } from "../src/app.module";
 import { TaskService } from "../src/modules/task/task.service";
-import { UserService } from "../src/modules/user/user.service";
+import { UserService } from "../src/modules/user/services/user.service";
 
 async function createNestApplication(): Promise<INestApplication> {
     process.env.DATABASE_NAME = "test_nestjs-final-test-db_TASKS";
