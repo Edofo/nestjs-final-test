@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Param } from "@nestjs/common";
 import { Post } from "@nestjs/common";
 
-import { UserExists } from "../../../decorators/user-exist.decorator";
 import { AddUserDto } from "../dtos/add-user.dto";
 import { UserService } from "../services/user.service";
 
@@ -16,7 +15,7 @@ export class UserController {
     }
 
     @Get("/:email")
-    async GetUser(@UserExists("email") email: string) {
+    async GetUser(@Param() email: string) {
         return await this.userService.getUser(email);
     }
 

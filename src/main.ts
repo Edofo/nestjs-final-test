@@ -34,8 +34,8 @@ async function bootstrap() {
 
     // Swagger
     const config = new DocumentBuilder()
-        .setTitle(`Leets - ${configService._isProd ? "Production" : "Development & Testing"} API`)
-        .setDescription("Official Leets API Documentation")
+        .setTitle(`NestJS-Final-Project - ${configService.isProd ? "Production" : "Development & Testing"} API`)
+        .setDescription("Official NestJS-Final-Project API Documentation")
         .setVersion("1.0")
         .build();
 

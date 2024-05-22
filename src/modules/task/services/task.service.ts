@@ -1,6 +1,6 @@
 import type { Task } from "@prisma/client";
 
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 
 import { PrismaService } from "../../../infrastructure/database/services/prisma.service";
 import { AddTaskDto } from "../dtos/add-task.dto";
@@ -9,34 +9,35 @@ import { AddTaskDto } from "../dtos/add-task.dto";
 export class TaskService {
     constructor(private readonly prisma: PrismaService) {}
 
-    addTask(name: AddTaskDto["name"], userId: AddTaskDto["userId"], priority: AddTaskDto["priority"]): Promise<Task> {
-        return this.prisma.task.create({
+    async addTask(
+        name: AddTaskDto["name"],
+        userId: AddTaskDto["userId"],
+        priority: AddTaskDto["priority"]
+    ): Promise<Task> {
+        await this.prisma.user.findUniqueOrThrow({ where: { id: userId } }).catch(() => {
+            throw new BadRequestException("User not found");
+        });
+
+        return await this.prisma.task.create({
             data: {
                 name,
                 priority: Number(priority),
-                user: {
-                    connect: {
-                        id: userId,
-                    },
-                },
+                user: { connect: { id: userId } },
+                // userId,
             },
         });
     }
 
-    getTaskByName(name: string): Promise<Task | null> {
-        return this.prisma.task.findFirst({
-            where: {
-                name,
-            },
-        });
+    async getTaskByName(name: string): Promise<Task | null> {
+        return await this.prisma.task.findFirst({ where: { name } });
     }
 
     async getUserTasks(userId: string): Promise<Task[]> {
-        return this.prisma.task.findMany({
-            where: {
-                userId,
-            },
+        await this.prisma.user.findUniqueOrThrow({ where: { id: userId } }).catch(() => {
+            throw new BadRequestException("User not found");
         });
+
+        return await this.prisma.task.findMany({ where: { userId } });
     }
 
     async resetData(): Promise<string> {

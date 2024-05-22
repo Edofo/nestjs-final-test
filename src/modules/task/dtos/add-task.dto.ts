@@ -11,7 +11,7 @@ export class AddTaskDto {
     userId!: string;
 
     @IsNotEmpty()
-    @Transform(({ value }) => parseInt(value))
+    @Transform(({ value }) => Number(value))
     @IsNumber()
     priority!: number;
 }

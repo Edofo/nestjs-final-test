@@ -1,7 +1,6 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { Body, Post } from "@nestjs/common";
 
-import { UserExists } from "../../../decorators/user-exist.decorator";
 import { AddTaskDto } from "../dtos/add-task.dto";
 import { TaskService } from "../services/task.service";
 
@@ -10,12 +9,12 @@ export class TaskController {
     constructor(private readonly taskService: TaskService) {}
 
     @Post()
-    createTask(@UserExists("userId") userId: string, @Body() { name, priority }: AddTaskDto) {
+    createTask(@Body() { userId, name, priority }: AddTaskDto) {
         return this.taskService.addTask(name, userId, priority);
     }
 
     @Get("/user/:userId")
-    getUserTasks(@UserExists("userId") userId: string) {
+    getUserTasks(@Param("userId") userId: string) {
         return this.taskService.getUserTasks(userId);
     }
 }

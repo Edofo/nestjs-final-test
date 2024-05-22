@@ -12,7 +12,7 @@ export class ConfigurationService {
     private _databaseConfig!: DatabaseConfiguration;
     private _appConfig!: AppConfiguration;
 
-    public _isProd: boolean = false;
+    public isProd: boolean = false;
 
     get databaseConfig(): DatabaseConfiguration {
         return this._databaseConfig;
@@ -47,9 +47,9 @@ export class ConfigurationService {
             APP_NAME: appName,
             APP_VERSION: appVersion,
             APP_ENV: appEnv,
-            APP_PORT: appPort ?? "4000",
+            APP_PORT: appPort,
         };
-        this._isProd = appEnv === "production" || appEnv === "prod";
+        this.isProd = appEnv.includes("prod");
 
         // DATABASE
         const databasePort = this.getVariableFromEnvFile(DATABASE_PORT);
@@ -67,7 +67,7 @@ export class ConfigurationService {
         const variable = this.nestConfigService.get<string>(key);
         if (!variable) {
             this.logger.error(`No ${key} could be found from env file.`, this.constructor.name);
-            throw new Error("No database port could be found from env file.");
+            throw new Error(`No ${key} could be found from env file.`);
         }
         return variable;
     }
