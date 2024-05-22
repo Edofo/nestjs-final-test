@@ -65,3 +65,5 @@ Make sure to configure your `.env` file with the appropriate settings for your d
 - test/             # Contains all tests end-to-end 
 
 ---
+
+<div align="center"> <sub>Built with ❤️ by <a href="https://github.com/edofo">Nolan</a> / <a href="https://github.com/Chahine-tech">Chahine</a></sub> </div>
