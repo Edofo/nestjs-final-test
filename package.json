@@ -25,7 +25,8 @@
         "migrate": "npx prisma migrate dev --name update",
         "studio": "npx prisma studio",
         "reset": "npx prisma migrate reset --force",
-        "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
+        "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts",
+        "postinstall": "npx prisma generate"
     },
     "dependencies": {
         "@nestjs/common": "^10.0.0",
