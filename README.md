@@ -3,7 +3,7 @@
 This project is a NestJS application with end-to-end tests using Postgres. This guide will help you set up the project, run the application, and execute tests.
 
 ### Authors
-Author : Nolan LeBoucher, Chahine Benlahcen tlemcani. 
+Author : Nolan Leboucher, Chahine Benlahcen tlemcani. 
 
 ## Prerequisites
 
@@ -15,16 +15,16 @@ Author : Nolan LeBoucher, Chahine Benlahcen tlemcani.
 
 1. Clone the repository:
 
-    ```bash
+```bash
     git clone https://github.com/Edofo/nestjs-final-test.git
     cd nestjs-final-test
-    ```
+```
 
 2. Install dependencies:
 
-    ```bash
+```bash
     npm ci
-    ```
+```
 
 ## Running the Application
 
@@ -33,9 +33,9 @@ Author : Nolan LeBoucher, Chahine Benlahcen tlemcani.
 
 1. Start the application with postgres:
 
-    ```bash
+```bash
     npm run start:postgres
-    ```
+```
 
 ## Running End-to-End Tests
 
@@ -43,9 +43,9 @@ Author : Nolan LeBoucher, Chahine Benlahcen tlemcani.
 
 1. Run the end-to-end tests with postgres:
 
-    ```bash
+```bash
     npm run test:e2e:postgres
-    ```
+```
 
 ## Environment Variables
 
