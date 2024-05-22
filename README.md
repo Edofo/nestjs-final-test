@@ -20,10 +20,10 @@ Author : Nolan Leboucher, Chahine Benlahcen tlemcani.
     cd nestjs-final-test
 ```
 
-2. Install dependencies:
+2. Install dependencies and setup the database
 
 ```bash
-    npm ci
+    npm run setup
 ```
 
 ## Running the Application

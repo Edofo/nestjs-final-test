@@ -8,6 +8,7 @@
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+        "setup": "npm ci && npm run db:postgres && npm run migrate deploy",
         "start": "nest start",
         "start:dev": "npx prisma generate && nest start --watch",
         "start:debug": "nest start --debug --watch",
@@ -17,15 +18,11 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-        "test:e2e:mongodb": "export DBMS=mongodb; docker-compose --env-file ./.env -f ./docker/docker-compose-mongodb.yml up -d; jest --config ./test/jest-e2e.json --runInBand",
-        "test:e2e:postgres": "export DBMS=postgres; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d; jest --config ./test/jest-e2e.json --runInBand",
-        "start:mongodb": "export DBMS=mongodb; docker-compose --env-file ./.env -f ./docker/docker-compose-mongodb.yml up -d; npm run start:dev",
-        "start:postgres": "export DBMS=postgres; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d; npm run start:dev",
+        "test:e2e:postgres": "npm run db:postgres; jest --config ./test/jest-e2e.json --runInBand",
+        "start:postgres": "npm run db:postgres; npm run start:dev",
+        "db:postgres": "export DBMS=postgres; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d",
         "generate": "npx prisma generate",
-        "migrate": "npx prisma migrate dev --name update",
-        "studio": "npx prisma studio",
-        "reset": "npx prisma migrate reset --force",
-        "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts",
+        "migrate": "npx prisma migrate dev",
         "postinstall": "npx prisma generate"
     },
     "dependencies": {
