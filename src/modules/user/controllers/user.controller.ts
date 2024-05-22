@@ -13,14 +13,4 @@ export class UserController {
     async AddUser(@Body() { email }: AddUserDto) {
         return await this.userService.addUser(email);
     }
-
-    @Get("/:email")
-    async GetUser(@Param() email: string) {
-        return await this.userService.getUser(email);
-    }
-
-    @Delete("")
-    async DeleteAllUser() {
-        return await this.userService.resetData();
-    }
 }
