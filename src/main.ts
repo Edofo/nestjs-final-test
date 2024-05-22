@@ -24,7 +24,6 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     // Init APP
-    // app.setGlobalPrefix("api");
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     app.enableVersioning({ type: VersioningType.URI });
 
@@ -45,7 +44,6 @@ async function bootstrap() {
     };
 
     const document = SwaggerModule.createDocument(app, config, options);
-    // writeFileSync("./swagger-spec.json", JSON.stringify(document));
     SwaggerModule.setup("", app, document);
 
     // Middlewares

@@ -5,7 +5,6 @@ import "winston-daily-rotate-file";
 const transports = [
     new winston.transports.Console({
         format: winston.format.combine(
-            // Add a timestamp to the console logs
             winston.format.timestamp(),
             winston.format.colorize(),
             winston.format.errors({ stack: true }),
@@ -22,10 +21,7 @@ const transports = [
         zippedArchive: true,
         maxSize: "20m",
         maxFiles: "14d",
-        format: winston.format.combine(
-            winston.format.timestamp(), // Add a timestamp to file logs
-            winston.format.json()
-        ),
+        format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
     }),
 ];
 

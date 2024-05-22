@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { User } from "@prisma/client/edge";
 
 import { ConflictException, Injectable } from "@nestjs/common";
 

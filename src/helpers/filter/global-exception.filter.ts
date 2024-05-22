@@ -35,7 +35,7 @@ export class GlobalExceptionFilter extends BaseExceptionFilter {
         this.logger = logger;
     }
 
-    postToSentryError(error: Error, response: Response) {
+    logError(error: Error, response: Response) {
         this.logger.error(inspect(error), error.stack ?? String(error), this.constructor.name);
 
         console.log(LOG_PREFIX, { statusCode: HttpStatus.BAD_REQUEST, message: MESSAGES.CONTACT_ADMIN });
@@ -52,7 +52,6 @@ export class GlobalExceptionFilter extends BaseExceptionFilter {
             if (exception instanceof Prisma.PrismaClientKnownRequestError) {
                 const defaultMessage = exception.message.replace(/\n/g, "");
 
-                // TODO: Send extra context to Sentry?
                 const meta = exception.meta;
 
                 let message;
@@ -74,8 +73,7 @@ export class GlobalExceptionFilter extends BaseExceptionFilter {
                         response.status(HttpStatus.NOT_FOUND).json({ statusCode: HttpStatus.NOT_FOUND, message });
                         break;
                     default:
-                        // Unexpected prisma error, send it to sentry
-                        this.postToSentryError(exception, response);
+                        this.logError(exception, response);
                         break;
                 }
             } else if (exception instanceof HttpException) {
@@ -84,12 +82,11 @@ export class GlobalExceptionFilter extends BaseExceptionFilter {
                 console.log(LOG_PREFIX, { statusCode, message });
                 response.status(statusCode).json({ statusCode, message });
             } else {
-                // Unexpected internal error, send it to sentry
-                this.postToSentryError(new Error(`Unexpected internal error, ${inspect(exception)}`), response);
+                this.logError(new Error(`Unexpected internal error, ${inspect(exception)}`), response);
             }
         } else {
             // This should never happen: it means that the exception itself is not a JS error; we rethrow it as an unexcepted error type
-            this.postToSentryError(new Error(`Unexpected error type, ${inspect(exception)}`), response);
+            this.logError(new Error(`Unexpected error type, ${inspect(exception)}`), response);
         }
     }
 }

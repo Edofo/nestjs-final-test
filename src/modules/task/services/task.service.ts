@@ -23,7 +23,6 @@ export class TaskService {
                 name,
                 priority: Number(priority),
                 user: { connect: { id: userId } },
-                // userId,
             },
         });
     }
